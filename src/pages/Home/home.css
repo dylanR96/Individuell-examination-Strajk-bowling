@@ -1,0 +1,23 @@
+@media only screen and (max-width: 800px) {
+  .main-home {
+    background-color: #fff4f1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .home-page-content {
+  }
+
+  .home-page__header {
+    color: #ec351a;
+    font-size: 3.5rem;
+    margin: 0;
+  }
+
+  .home-page__second-header {
+    color: #340d6d;
+    margin: 0;
+  }
+}

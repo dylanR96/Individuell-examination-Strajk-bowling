@@ -1,11 +1,18 @@
 import React from "react";
-import Menu from "../../components/Menu";
+import "./home.css";
+import BowlingIcon from "../../assets/BowlingIcon";
+import { Link } from "@tanstack/react-router";
 
-const Home = () => {
+const Home: React.FC = () => {
   return (
-    <div>
-      <Menu />
-      Home
+    <div className="main-home">
+      <div className="home-page-content">
+        <Link to="/booking">
+          <BowlingIcon />
+        </Link>
+        <h1 className="home-page__header">STRAJK</h1>
+        <h3 className="home-page__second-header">BOWLING</h3>
+      </div>
     </div>
   );
 };
