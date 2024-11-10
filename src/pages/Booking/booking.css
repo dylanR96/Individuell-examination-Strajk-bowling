@@ -55,6 +55,15 @@
     background-color: #fff4f1;
   }
 
+  .form-group select {
+    width: 95%;
+    padding: 12px 8px;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    background-color: #fff4f1;
+  }
+
   .testy {
     display: flex;
     gap: 1rem;

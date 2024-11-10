@@ -2,14 +2,28 @@ import React, { useState } from "react";
 import Menu from "../../components/Menu";
 import "./booking.css";
 import BowlingIconSmall from "../../assets/BowlingIconSmall";
+import { BookingData } from "../../../backend/middleware/bookingSchema";
+
+const sizesOfShoess: string[] = [
+  "Euro 36",
+  "Euro 37",
+  "Euro 38",
+  "Euro 39",
+  "Euro 40",
+  "Euro 41",
+  "Euro 42",
+  "Euro 43",
+  "Euro 44",
+  "Euro 45",
+];
 
 const Booking: React.FC = () => {
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
-  const [lanes, setLanes] = useState("");
-
-  const [inputCount, setInputCount] = useState(1);
-  const [shoeSizes, setShoeSizes] = useState<string[]>([""]);
+  const [when, setWhen] = useState<string>("");
+  const [time, setTime] = useState<string>("");
+  const [lanes, setLanes] = useState<number>(0);
+  const [players, setPlayers] = useState<number>(0);
+  const [inputCount, setInputCount] = useState<number>();
+  const [shoeSizes, setShoeSizes] = useState<string[]>([]);
 
   const handleShoeSizesChange = (index: number, value: string) => {
     const updatedSizes = [...shoeSizes];
@@ -17,8 +31,38 @@ const Booking: React.FC = () => {
     setShoeSizes(updatedSizes);
   };
 
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    const bookingData: BookingData = {
+      when: `${when}T${time}`,
+      lanes,
+      players,
+      shoes: shoeSizes.map((size) => parseInt(size, 10) || 0),
+    };
+
+    try {
+      const API_URL = "https://h5jbtjv6if.execute-api.eu-north-1.amazonaws.com";
+      const API_KEY = "738c6b9d-24cf-47c3-b688-f4f4c5747662";
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "x-api-key": API_KEY,
+        },
+        body: JSON.stringify(bookingData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Error");
+      }
+      const data = await response.json();
+      console.log("Booking successful:", data);
+    } catch (error) {
+      console.error("Booking failed:", error);
+    }
+  };
   const handleInputCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const count = parseInt(e.target.value, 10) || 0;
+    setPlayers(count);
     setInputCount(count);
 
     setShoeSizes((prevSizes) =>
@@ -42,14 +86,14 @@ const Booking: React.FC = () => {
             <h2>WHEN, WHAT & WHO</h2>
             <div className="booking-form-dividers"></div>
           </div>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="testy">
               <fieldset className="form-group">
                 <legend>DATE</legend>
                 <input
-                  type="text"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
+                  type="date"
+                  value={when}
+                  onChange={(e) => setWhen(e.target.value)}
                   required
                 />
               </fieldset>
@@ -57,7 +101,7 @@ const Booking: React.FC = () => {
               <fieldset className="form-group">
                 <legend>TIME</legend>
                 <input
-                  type="text"
+                  type="time"
                   value={time}
                   onChange={(e) => setTime(e.target.value)}
                   required
@@ -68,7 +112,7 @@ const Booking: React.FC = () => {
               <legend>NUMBER OF AWESOME BOWLERS</legend>
               <input
                 type="number"
-                value={inputCount}
+                value={players}
                 onChange={handleInputCountChange}
                 required
                 min="1"
@@ -77,10 +121,11 @@ const Booking: React.FC = () => {
             <fieldset className="form-group">
               <legend>NUMBER OF LANES</legend>
               <input
-                type="text"
+                type="number"
                 value={lanes}
-                onChange={(e) => setLanes(e.target.value)}
+                onChange={(e) => setLanes(parseInt(e.target.value, 10))}
                 required
+                min="1"
               />
             </fieldset>
             <div className="booking-form-header">
@@ -88,20 +133,34 @@ const Booking: React.FC = () => {
               <h2>SHOES</h2>
               <div className="booking-form-lower-dividers"></div>
             </div>
-            {shoeSizes.map((size, index) => (
-              <fieldset className="form-group">
-                <legend key={index}>SHOE SIZE / PERSON {index + 1}</legend>
-                <input
-                  type="text"
-                  value={size}
-                  onChange={(e) => handleShoeSizesChange(index, e.target.value)}
-                  required
-                />
-              </fieldset>
-            ))}
-            <div>
-              <button type="submit">STRRIIIIIIKE!</button>
-            </div>
+            {shoeSizes.length > 0 && (
+              <>
+                {shoeSizes.map((size, index) => (
+                  <div>
+                    <fieldset className="form-group">
+                      <legend key={index}>
+                        SHOE SIZE / PERSON {index + 1}
+                      </legend>
+                      <select
+                        value={size}
+                        onChange={(e) =>
+                          handleShoeSizesChange(index, e.target.value)
+                        }
+                      >
+                        {sizesOfShoess.map((availableSizes, optionsIndex) => (
+                          <option key={optionsIndex} value={availableSizes}>
+                            {availableSizes}
+                          </option>
+                        ))}
+                      </select>
+                    </fieldset>
+                  </div>
+                ))}
+                <div>
+                  <button type="submit">LETS BOWL!</button>
+                </div>
+              </>
+            )}
           </form>
         </div>
       </div>
