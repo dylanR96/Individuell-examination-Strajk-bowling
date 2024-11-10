@@ -2,6 +2,7 @@
   .main-booking {
     background-color: #fff4f1;
     display: flex;
+
     height: 100vh;
   }
 
@@ -10,6 +11,7 @@
     flex-direction: column;
     align-items: center;
     margin-top: 2rem;
+    width: 100%;
   }
 
   .booking-header {
@@ -24,9 +26,43 @@
     justify-content: center;
   }
 
-  .booking-form-header-divider {
+  .booking-form-dividers {
     background-color: #441d81;
-    width: 5rem;
+    width: 100%;
+    height: 0.07rem;
+    margin: 0.5rem;
+  }
+  .form-group {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 0 8px;
+    margin: 20px;
+    position: relative;
+  }
+
+  .form-group legend {
+    font-size: 14px;
+    padding: 0 4px;
+    color: #555;
+  }
+
+  .form-group input {
+    width: 95%;
+    padding: 12px 8px;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    background-color: #fff4f1;
+  }
+
+  .testy {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .booking-form-lower-dividers {
+    background-color: #441d81;
+    width: 100%;
     height: 0.07rem;
     margin: 0.5rem;
   }

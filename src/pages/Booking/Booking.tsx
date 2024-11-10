@@ -6,13 +6,9 @@ import BowlingIconSmall from "../../assets/BowlingIconSmall";
 const Booking: React.FC = () => {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
-  const [bowlers, setBowlers] = useState("");
   const [lanes, setLanes] = useState("");
-  const [personOne, setPersonOne] = useState("");
-  const [personTwo, setPersonTwo] = useState("");
-  const [personThree, setPersonThree] = useState("");
 
-  const [inputCount, setInputCount] = useState();
+  const [inputCount, setInputCount] = useState(1);
   const [shoeSizes, setShoeSizes] = useState<string[]>([""]);
 
   const handleShoeSizesChange = (index: number, value: string) => {
@@ -42,96 +38,67 @@ const Booking: React.FC = () => {
         </div>
         <div>
           <div className="booking-form-header">
-            <div className="booking-form-header-divider"></div>
+            <div className="booking-form-dividers"></div>
             <h2>WHEN, WHAT & WHO</h2>
-            <div className="booking-form-header-divider"></div>
+            <div className="booking-form-dividers"></div>
           </div>
           <form>
-            <label>
-              DATE
+            <div className="testy">
+              <fieldset className="form-group">
+                <legend>DATE</legend>
+                <input
+                  type="text"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                  required
+                />
+              </fieldset>
+
+              <fieldset className="form-group">
+                <legend>TIME</legend>
+                <input
+                  type="text"
+                  value={time}
+                  onChange={(e) => setTime(e.target.value)}
+                  required
+                />
+              </fieldset>
+            </div>
+            <fieldset className="form-group">
+              <legend>NUMBER OF AWESOME BOWLERS</legend>
               <input
-                type="text"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                placeholder="Date"
-                required
-              />
-            </label>
-            <label>
-              TIME
-              <input
-                type="text"
-                value={time}
-                onChange={(e) => setTime(e.target.value)}
-                placeholder="Time"
-                required
-              />
-            </label>
-            <label>
-              NUMBER OF AWESOME BOWLERS
-              <input
-                type="text"
+                type="number"
                 value={inputCount}
                 onChange={handleInputCountChange}
-                placeholder="Number of players"
                 required
+                min="1"
               />
-            </label>
-            <label>
-              NUMBER OF LANES
+            </fieldset>
+            <fieldset className="form-group">
+              <legend>NUMBER OF LANES</legend>
               <input
                 type="text"
                 value={lanes}
                 onChange={(e) => setLanes(e.target.value)}
-                placeholder="Number of lanes"
                 required
               />
-            </label>
-            <div></div>
-            <h2>SHOES</h2>
-            <div></div>
+            </fieldset>
+            <div className="booking-form-header">
+              <div className="booking-form-lower-dividers"></div>
+              <h2>SHOES</h2>
+              <div className="booking-form-lower-dividers"></div>
+            </div>
             {shoeSizes.map((size, index) => (
-              <label key={index}>
-                SHOE SIZE / PERSON {index + 1}
+              <fieldset className="form-group">
+                <legend key={index}>SHOE SIZE / PERSON {index + 1}</legend>
                 <input
                   type="text"
                   value={size}
                   onChange={(e) => handleShoeSizesChange(index, e.target.value)}
-                  placeholder={`Person ${index + 1}`}
                   required
                 />
-              </label>
+              </fieldset>
             ))}
-            {/* <label>
-              SHOE SIZE / PERSON 1
-              <input
-                type="text"
-                value={personOne}
-                onChange={(e) => setPersonOne(e.target.value)}
-                placeholder="Person 1"
-                required
-              />
-            </label>
-            <label>
-              SHOE SIZE / PERSON 2
-              <input
-                type="text"
-                value={personTwo}
-                onChange={(e) => setPersonTwo(e.target.value)}
-                placeholder="Person 2"
-                required
-              />
-            </label>
-            <label>
-              SHOE SIZE / PERSON 3
-              <input
-                type="text"
-                value={personThree}
-                onChange={(e) => setPersonThree(e.target.value)}
-                placeholder="Person 3"
-                required
-              />
-            </label> */}
             <div>
               <button type="submit">STRRIIIIIIKE!</button>
             </div>
