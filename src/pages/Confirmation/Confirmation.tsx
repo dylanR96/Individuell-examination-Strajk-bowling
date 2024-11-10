@@ -3,7 +3,8 @@ import Menu from "../../components/Menu";
 import "./confirmation.css";
 import BowlingIconSmall from "../../assets/BowlingIconSmall";
 
-const Confirmation: React.FC = () => {
+const Confirmation: React.FC = ({ responseData }) => {
+  const [when, lanes, shoes, price, id] = responseData;
   return (
     <div className="main-confirmation">
       <nav className="confirmation-nav">

@@ -3,6 +3,7 @@ import Menu from "../../components/Menu";
 import "./booking.css";
 import BowlingIconSmall from "../../assets/BowlingIconSmall";
 import { BookingData } from "../../../backend/middleware/bookingSchema";
+import { useNavigate } from "@tanstack/react-router";
 
 const sizesOfShoess: string[] = [
   "Euro 36",
@@ -18,12 +19,17 @@ const sizesOfShoess: string[] = [
 ];
 
 const Booking: React.FC = () => {
+  const navigate = useNavigate();
   const [when, setWhen] = useState<string>("");
   const [time, setTime] = useState<string>("");
   const [lanes, setLanes] = useState<number>(0);
   const [players, setPlayers] = useState<number>(0);
   const [inputCount, setInputCount] = useState<number>();
   const [shoeSizes, setShoeSizes] = useState<string[]>([]);
+
+  const handleNavigate = () => {
+    navigate({ to: "/confirmation" });
+  };
 
   const handleShoeSizesChange = (index: number, value: string) => {
     const updatedSizes = [...shoeSizes];
@@ -56,6 +62,7 @@ const Booking: React.FC = () => {
       }
       const data = await response.json();
       console.log("Booking successful:", data);
+      handleNavigate();
     } catch (error) {
       console.error("Booking failed:", error);
     }
