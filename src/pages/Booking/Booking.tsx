@@ -4,6 +4,7 @@ import "./booking.css";
 import BowlingIconSmall from "../../assets/BowlingIconSmall";
 import { BookingData } from "../../../backend/middleware/bookingSchema";
 import { useNavigate } from "@tanstack/react-router";
+import { useResponseData } from "../../providers/ResponseDataContext";
 
 const sizesOfShoess: string[] = [
   "Euro 36",
@@ -19,6 +20,7 @@ const sizesOfShoess: string[] = [
 ];
 
 const Booking: React.FC = () => {
+  const { setResponseData } = useResponseData();
   const navigate = useNavigate();
   const [when, setWhen] = useState<string>("");
   const [time, setTime] = useState<string>("");
@@ -61,7 +63,8 @@ const Booking: React.FC = () => {
         throw new Error("Error");
       }
       const data = await response.json();
-      console.log("Booking successful:", data);
+      console.log("Booking successful:", data.players);
+      setResponseData(data);
       handleNavigate();
     } catch (error) {
       console.error("Booking failed:", error);

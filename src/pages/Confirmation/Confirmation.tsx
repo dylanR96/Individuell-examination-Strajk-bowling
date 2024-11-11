@@ -2,9 +2,14 @@ import React from "react";
 import Menu from "../../components/Menu";
 import "./confirmation.css";
 import BowlingIconSmall from "../../assets/BowlingIconSmall";
+import { useResponseData } from "../../providers/ResponseDataContext";
 
-const Confirmation: React.FC = ({ responseData }) => {
-  const [when, lanes, shoes, price, id] = responseData;
+const Confirmation: React.FC = () => {
+  const { responseData } = useResponseData();
+
+  if (!responseData) {
+    return <div>No booking data available</div>;
+  }
   return (
     <div className="main-confirmation">
       <nav className="confirmation-nav">
@@ -24,24 +29,24 @@ const Confirmation: React.FC = ({ responseData }) => {
           <form>
             <fieldset className="form-group">
               <legend>WHEN</legend>
-              <span></span>
+              <span>{responseData.when}</span>
             </fieldset>
 
             <fieldset className="form-group">
               <legend>WHO</legend>
-              <span></span>
+              <span>{responseData.players}</span>
             </fieldset>
             <fieldset className="form-group">
               <legend>LANES</legend>
-              <span></span>
+              <span>{responseData.lanes}</span>
             </fieldset>
             <fieldset className="form-group">
               <legend>BOOKING NUMBER</legend>
-              <span></span>
+              <span>{responseData.id}</span>
             </fieldset>
             <fieldset className="form-group">
               <span>total</span>
-              <span></span>
+              <span>{responseData.price}</span>
             </fieldset>
 
             <div>
