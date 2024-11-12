@@ -2,11 +2,10 @@ import React, { useState } from "react";
 import Menu from "../../components/Menu";
 import "./booking.css";
 import BowlingIconSmall from "../../assets/BowlingIconSmall";
-import { BookingData } from "../../../backend/middleware/bookingSchema";
 import { useNavigate } from "@tanstack/react-router";
 import { useResponseData } from "../../providers/ResponseDataContext";
 
-const sizesOfShoess: string[] = [
+const sizesOfShoes: string[] = [
   "Euro 36",
   "Euro 37",
   "Euro 38",
@@ -19,6 +18,13 @@ const sizesOfShoess: string[] = [
   "Euro 45",
 ];
 
+interface BookingData {
+  when: string;
+  lanes: number;
+  players: number;
+  shoes: number[];
+}
+
 const Booking: React.FC = () => {
   const { setResponseData } = useResponseData();
   const navigate = useNavigate();
@@ -26,8 +32,8 @@ const Booking: React.FC = () => {
   const [time, setTime] = useState<string>("");
   const [lanes, setLanes] = useState<number>(0);
   const [players, setPlayers] = useState<number>(0);
-  const [inputCount, setInputCount] = useState<number>();
   const [shoeSizes, setShoeSizes] = useState<string[]>([]);
+  const [maxPlayers, setMaxPlayers] = useState<number>(0);
 
   const handleNavigate = () => {
     navigate({ to: "/confirmation" });
@@ -37,6 +43,14 @@ const Booking: React.FC = () => {
     const updatedSizes = [...shoeSizes];
     updatedSizes[index] = value;
     setShoeSizes(updatedSizes);
+  };
+
+  const handleLanesWithPlayers = (lanes: number) => {
+    console.log("Number of lanes: " + lanes);
+
+    const maxPlayers = lanes * 4;
+    setMaxPlayers(4);
+    console.log("Max players: " + maxPlayers);
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -72,8 +86,12 @@ const Booking: React.FC = () => {
   };
   const handleInputCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const count = parseInt(e.target.value, 10) || 0;
-    setPlayers(count);
-    setInputCount(count);
+
+    if (count <= maxPlayers) {
+      setPlayers(count);
+    } else {
+      setPlayers(maxPlayers);
+    }
 
     setShoeSizes((prevSizes) =>
       Array.from({ length: count }, (_, i) => prevSizes[i] || "")
@@ -81,97 +99,102 @@ const Booking: React.FC = () => {
   };
 
   return (
-    <div className="main-booking">
+    <div>
       <nav className="booking-nav">
         <Menu />
       </nav>
-      <div className="booking-content">
-        <div>
-          <BowlingIconSmall />
-          <h1 className="booking-header">BOOKING</h1>
-        </div>
-        <div>
-          <div className="booking-form-header">
-            <div className="booking-form-dividers"></div>
-            <h2>WHEN, WHAT & WHO</h2>
-            <div className="booking-form-dividers"></div>
+      <div className="main-booking">
+        <div className="booking-content">
+          <div className="booking-header-container">
+            <BowlingIconSmall />
+            <h1 className="booking-header">BOOKING</h1>
           </div>
-          <form onSubmit={handleSubmit}>
-            <div className="testy">
-              <fieldset className="form-group">
-                <legend>DATE</legend>
-                <input
-                  type="date"
-                  value={when}
-                  onChange={(e) => setWhen(e.target.value)}
-                  required
-                />
-              </fieldset>
-
-              <fieldset className="form-group">
-                <legend>TIME</legend>
-                <input
-                  type="time"
-                  value={time}
-                  onChange={(e) => setTime(e.target.value)}
-                  required
-                />
-              </fieldset>
-            </div>
-            <fieldset className="form-group">
-              <legend>NUMBER OF AWESOME BOWLERS</legend>
-              <input
-                type="number"
-                value={players}
-                onChange={handleInputCountChange}
-                required
-                min="1"
-              />
-            </fieldset>
-            <fieldset className="form-group">
-              <legend>NUMBER OF LANES</legend>
-              <input
-                type="number"
-                value={lanes}
-                onChange={(e) => setLanes(parseInt(e.target.value, 10))}
-                required
-                min="1"
-              />
-            </fieldset>
+          <div>
             <div className="booking-form-header">
-              <div className="booking-form-lower-dividers"></div>
-              <h2>SHOES</h2>
-              <div className="booking-form-lower-dividers"></div>
+              <div className="booking-form-dividers"></div>
+              <h2 className="booking-second-headers">WHEN, WHAT & WHO</h2>
+              <div className="booking-form-dividers"></div>
             </div>
-            {shoeSizes.length > 0 && (
-              <>
-                {shoeSizes.map((size, index) => (
-                  <div>
-                    <fieldset className="form-group">
-                      <legend key={index}>
-                        SHOE SIZE / PERSON {index + 1}
-                      </legend>
-                      <select
-                        value={size}
-                        onChange={(e) =>
-                          handleShoeSizesChange(index, e.target.value)
-                        }
-                      >
-                        {sizesOfShoess.map((availableSizes, optionsIndex) => (
-                          <option key={optionsIndex} value={availableSizes}>
-                            {availableSizes}
-                          </option>
-                        ))}
-                      </select>
-                    </fieldset>
+            <form onSubmit={handleSubmit}>
+              <div className="booking-form">
+                <fieldset className="form-group-booking">
+                  <legend>DATE</legend>
+                  <input
+                    type="date"
+                    value={when}
+                    onChange={(e) => setWhen(e.target.value)}
+                    required
+                  />
+                </fieldset>
+
+                <fieldset className="form-group-booking">
+                  <legend>TIME</legend>
+                  <input
+                    type="time"
+                    value={time}
+                    onChange={(e) => setTime(e.target.value)}
+                    required
+                  />
+                </fieldset>
+              </div>
+              <fieldset className="form-group-booking">
+                <legend>NUMBER OF AWESOME BOWLERS</legend>
+                <input
+                  type="number"
+                  value={players}
+                  onChange={handleInputCountChange}
+                  required
+                  min="1"
+                />
+              </fieldset>
+              <fieldset className="form-group-booking">
+                <legend>NUMBER OF LANES</legend>
+                <input
+                  type="number"
+                  value={lanes}
+                  onChange={(e) => {
+                    handleLanesWithPlayers(lanes);
+                    setLanes(parseInt(e.target.value, 10));
+                  }}
+                  required
+                  min="1"
+                />
+              </fieldset>
+              <div className="booking-form-header">
+                <div className="booking-form-lower-dividers"></div>
+                <h2 className="booking-second-headers">SHOES</h2>
+                <div className="booking-form-lower-dividers"></div>
+              </div>
+              {shoeSizes.length > 0 && (
+                <>
+                  {shoeSizes.map((size, index) => (
+                    <div key={index}>
+                      <fieldset className="form-group-booking">
+                        <legend>SHOE SIZE / PERSON {index + 1}</legend>
+                        <select
+                          value={size}
+                          onChange={(e) =>
+                            handleShoeSizesChange(index, e.target.value)
+                          }
+                        >
+                          {sizesOfShoes.map((availableSizes, optionsIndex) => (
+                            <option key={optionsIndex} value={availableSizes}>
+                              {availableSizes}
+                            </option>
+                          ))}
+                        </select>
+                      </fieldset>
+                    </div>
+                  ))}
+                  <div className="booking-btn-container">
+                    <button className="booking-btn" type="submit">
+                      LETS BOWL!
+                    </button>
                   </div>
-                ))}
-                <div>
-                  <button type="submit">LETS BOWL!</button>
-                </div>
-              </>
-            )}
-          </form>
+                </>
+              )}
+            </form>
+          </div>
         </div>
       </div>
     </div>

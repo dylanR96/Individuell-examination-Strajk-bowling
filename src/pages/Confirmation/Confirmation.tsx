@@ -6,53 +6,59 @@ import { useResponseData } from "../../providers/ResponseDataContext";
 
 const Confirmation: React.FC = () => {
   const { responseData } = useResponseData();
-
-  if (!responseData) {
-    return <div>No booking data available</div>;
-  }
   return (
-    <div className="main-confirmation">
-      <nav className="confirmation-nav">
+    <div>
+      <nav className="booking-nav">
         <Menu />
       </nav>
-      <div className="confirmation-content">
-        <div>
-          <BowlingIconSmall />
-          <h1 className="confirmation-header">SEE YOU SOON!</h1>
-        </div>
-        <div>
-          <div className="confirmation-form-header">
-            <div className="confirmation-form-dividers"></div>
-            <h2>BOOKING DETAILS</h2>
-            <div className="confirmation-form-dividers"></div>
+      <div className="main-confirmation">
+        <div className="confirmation-content">
+          <div className="confirmation-header-container">
+            <BowlingIconSmall />
+            <h1 className="confirmation-header">SEE YOU SOON!</h1>
           </div>
-          <form>
-            <fieldset className="form-group">
-              <legend>WHEN</legend>
-              <span>{responseData.when}</span>
-            </fieldset>
-
-            <fieldset className="form-group">
-              <legend>WHO</legend>
-              <span>{responseData.players}</span>
-            </fieldset>
-            <fieldset className="form-group">
-              <legend>LANES</legend>
-              <span>{responseData.lanes}</span>
-            </fieldset>
-            <fieldset className="form-group">
-              <legend>BOOKING NUMBER</legend>
-              <span>{responseData.id}</span>
-            </fieldset>
-            <fieldset className="form-group">
-              <span>total</span>
-              <span>{responseData.price}</span>
-            </fieldset>
-
-            <div>
-              <button type="submit">SWEET, LETS GO!</button>
+          <div>
+            <div className="confirmation-form-header">
+              <div className="confirmation-form-dividers"></div>
+              <h2>BOOKING DETAILS</h2>
+              <div className="confirmation-form-dividers"></div>
             </div>
-          </form>
+            {!responseData ? (
+              <div className="confirmation-without-data">
+                <p>No booking data available</p>
+              </div>
+            ) : (
+              <form>
+                <div>
+                  <fieldset className="form-group-confirmation">
+                    <legend>WHEN</legend>
+                    <span>{responseData.when}</span>
+                  </fieldset>
+
+                  <fieldset className="form-group-confirmation">
+                    <legend>WHO</legend>
+                    <span>{responseData.players}</span>
+                  </fieldset>
+                  <fieldset className="form-group-confirmation">
+                    <legend>LANES</legend>
+                    <span>{responseData.lanes}</span>
+                  </fieldset>
+                  <fieldset className="form-group-confirmation">
+                    <legend>BOOKING NUMBER</legend>
+                    <span>{responseData.id}</span>
+                  </fieldset>
+                </div>
+                <fieldset className="form-group-confirmation-price">
+                  <span>total</span>
+                  <span>{`${responseData.price}sek`}</span>
+                </fieldset>
+
+                <div>
+                  <button type="submit">SWEET, LETS GO!</button>
+                </div>
+              </form>
+            )}
+          </div>
         </div>
       </div>
     </div>

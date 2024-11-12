@@ -13,6 +13,14 @@
     width: 100%;
   }
 
+  .confirmation-header-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 3rem;
+  }
+
   .confirmation-header {
     color: #ec351a;
     font-size: 3.5rem;
@@ -23,46 +31,58 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-bottom: 1rem;
   }
 
   .confirmation-form-dividers {
     background-color: #441d81;
-    width: 100%;
-    height: 0.07rem;
+    width: 4rem;
+    height: 0.9px;
     margin: 0.5rem;
   }
-  .form-group {
+  .form-group-confirmation {
     border: 1px solid #ccc;
     border-radius: 4px;
     padding: 0 8px;
-    margin: 20px;
+    margin: 1rem 0;
     position: relative;
+    width: 24rem;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .form-group-confirmation-price {
+    border: 1px solid #ff0000;
+    color: red;
+    border-radius: 4px;
+    padding: 0 8px;
+    margin: 1rem 0;
+    position: relative;
+    width: 24rem;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   .form-group legend {
-    font-size: 14px;
+    font-size: 0.9rem;
     padding: 0 4px;
     color: #555;
   }
 
-  .form-group input {
+  .form-group span {
     width: 95%;
     padding: 12px 8px;
-    font-size: 16px;
+    font-size: 1rem;
     border: none;
     outline: none;
     background-color: #fff4f1;
   }
 
-  .testy {
-    display: flex;
-    gap: 1rem;
-  }
-
-  .booking-form-lower-dividers {
-    background-color: #441d81;
-    width: 100%;
-    height: 0.07rem;
-    margin: 0.5rem;
+  .confirmation-without-data {
+    text-align: center;
+    font-size: 2rem;
   }
 }
