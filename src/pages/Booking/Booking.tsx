@@ -117,7 +117,7 @@ const Booking: React.FC = () => {
             </div>
             <form onSubmit={handleSubmit}>
               <div className="booking-form">
-                <fieldset className="form-group-booking">
+                <fieldset className="form-group-booking when">
                   <legend>DATE</legend>
                   <input
                     type="date"
@@ -127,7 +127,7 @@ const Booking: React.FC = () => {
                   />
                 </fieldset>
 
-                <fieldset className="form-group-booking">
+                <fieldset className="form-group-booking when">
                   <legend>TIME</legend>
                   <input
                     type="time"

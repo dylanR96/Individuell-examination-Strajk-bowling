@@ -3,9 +3,18 @@ import Menu from "../../components/Menu";
 import "./confirmation.css";
 import BowlingIconSmall from "../../assets/BowlingIconSmall";
 import { useResponseData } from "../../providers/ResponseDataContext";
+import { useNavigate } from "@tanstack/react-router";
 
 const Confirmation: React.FC = () => {
+  const { setResponseData } = useResponseData();
+  const navigate = useNavigate();
   const { responseData } = useResponseData();
+  const handleNavigate = (event: React.FormEvent) => {
+    event.preventDefault();
+    setResponseData(null);
+    navigate({ to: "/" });
+  };
+
   return (
     <div>
       <nav className="booking-nav">
@@ -28,7 +37,7 @@ const Confirmation: React.FC = () => {
                 <p>No booking data available</p>
               </div>
             ) : (
-              <form>
+              <form onSubmit={handleNavigate}>
                 <div>
                   <fieldset className="form-group-confirmation">
                     <legend>WHEN</legend>
