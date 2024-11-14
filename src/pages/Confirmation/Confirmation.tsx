@@ -15,6 +15,16 @@ const Confirmation: React.FC = () => {
     navigate({ to: "/" });
   };
 
+  const handleWhenResponse = () => {
+    if (!responseData) return;
+
+    const [date, time] = responseData.when.split("T");
+    const [, month, day] = date.split("-");
+    const choosenDate = `${day}-${month}`;
+
+    return `${time}, ${choosenDate}`;
+  };
+
   return (
     <div>
       <nav className="booking-nav">
@@ -41,7 +51,7 @@ const Confirmation: React.FC = () => {
                 <div>
                   <fieldset className="form-group-confirmation">
                     <legend>WHEN</legend>
-                    <span>{responseData.when}</span>
+                    <span>{handleWhenResponse()}</span>
                   </fieldset>
 
                   <fieldset className="form-group-confirmation">
@@ -63,7 +73,9 @@ const Confirmation: React.FC = () => {
                 </fieldset>
 
                 <div>
-                  <button type="submit">SWEET, LETS GO!</button>
+                  <button className="confirmation-btn" type="submit">
+                    SWEET, LETS GO!
+                  </button>
                 </div>
               </form>
             )}
