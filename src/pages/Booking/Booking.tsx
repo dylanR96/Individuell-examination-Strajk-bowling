@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Menu from "../../components/Menu";
 import "./booking.css";
 import BowlingIconSmall from "../../assets/BowlingIconSmall";
@@ -33,7 +33,20 @@ const Booking: React.FC = () => {
   const [lanes, setLanes] = useState<number>(0);
   const [players, setPlayers] = useState<number>(0);
   const [shoeSizes, setShoeSizes] = useState<string[]>([]);
-  const [maxPlayers, setMaxPlayers] = useState<number>(0);
+  const [maxPlayers, setMaxPlayers] = useState<number>(4);
+
+  useEffect(() => {
+    setMaxPlayers(lanes * 4);
+    if (players > lanes * 4) {
+      setPlayers(lanes * 4);
+    }
+  }, [lanes, players]);
+
+  useEffect(() => {
+    setShoeSizes((prevSizes) =>
+      Array.from({ length: players }, (_, i) => prevSizes[i] || "")
+    );
+  }, [players]);
 
   const handleNavigate = () => {
     navigate({ to: "/confirmation" });
@@ -43,14 +56,6 @@ const Booking: React.FC = () => {
     const updatedSizes = [...shoeSizes];
     updatedSizes[index] = value;
     setShoeSizes(updatedSizes);
-  };
-
-  const handleLanesWithPlayers = (lanes: number) => {
-    console.log("Number of lanes: " + lanes);
-
-    const maxPlayers = lanes * 4;
-    setMaxPlayers(4);
-    console.log("Max players: " + maxPlayers);
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -84,18 +89,10 @@ const Booking: React.FC = () => {
       console.error("Booking failed:", error);
     }
   };
+
   const handleInputCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const count = parseInt(e.target.value, 10) || 0;
-
-    if (count <= maxPlayers) {
-      setPlayers(count);
-    } else {
-      setPlayers(maxPlayers);
-    }
-
-    setShoeSizes((prevSizes) =>
-      Array.from({ length: count }, (_, i) => prevSizes[i] || "")
-    );
+    setPlayers(Math.min(count, maxPlayers));
   };
 
   return (
@@ -152,10 +149,9 @@ const Booking: React.FC = () => {
                 <input
                   type="number"
                   value={lanes}
-                  onChange={(e) => {
-                    handleLanesWithPlayers(lanes);
-                    setLanes(parseInt(e.target.value, 10));
-                  }}
+                  onChange={(e) =>
+                    setLanes(Math.max(parseInt(e.target.value, 10) || 1, 1))
+                  }
                   required
                   min="1"
                 />
